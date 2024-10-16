@@ -26,18 +26,27 @@ enum CourseClassStatus {
 }
 
 type Query {
-  user(id: ID!): User
+  profile: User
   courseClass(id: ID!): CourseClass
 }
 
 type Mutation {
-  login(username: String!, password: String!): String
-  signUp(userInput: UserInput!): User
+  login(email: String!, password: String!): LoginResponse
+  signUp(userInput: UserInput!): SignUpResponse
+}
+
+type SignUpResponse {
+  message: String!
+}
+
+type LoginResponse {
+  message: String!
+  token: String
 }
 
 input UserInput {
-  email: String! 
-  password: String! 
-  fullName: String! 
+  email: String!
+  password: String!
+  fullName: String!
   role: UserRole!
 }

@@ -3,8 +3,12 @@ const queries: QueryResolvers = {
   courseClass: async (_, { id }, { dataSources }) => {
     return dataSources.userRepo.getCourseClassById(id);
   },
-  user: async (_, { id }, { dataSources }) => {
-    return dataSources.userAPI.getUserById(id);
+  profile: async (_, {}, { user, dataSources }) => {
+    if (!user) {
+      throw new Error("User unauthorized");
+    }
+
+    return user;
   },
 };
 

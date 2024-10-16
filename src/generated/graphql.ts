@@ -32,16 +32,22 @@ export enum CourseClassStatus {
   Open = 'OPEN'
 }
 
+export type LoginResponse = {
+  __typename?: 'LoginResponse';
+  message: Scalars['String']['output'];
+  token?: Maybe<Scalars['String']['output']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
-  login?: Maybe<Scalars['String']['output']>;
-  signUp?: Maybe<User>;
+  login?: Maybe<LoginResponse>;
+  signUp?: Maybe<SignUpResponse>;
 };
 
 
 export type MutationLoginArgs = {
+  email: Scalars['String']['input'];
   password: Scalars['String']['input'];
-  username: Scalars['String']['input'];
 };
 
 
@@ -52,7 +58,7 @@ export type MutationSignUpArgs = {
 export type Query = {
   __typename?: 'Query';
   courseClass?: Maybe<CourseClass>;
-  user?: Maybe<User>;
+  profile?: Maybe<User>;
 };
 
 
@@ -60,9 +66,9 @@ export type QueryCourseClassArgs = {
   id: Scalars['ID']['input'];
 };
 
-
-export type QueryUserArgs = {
-  id: Scalars['ID']['input'];
+export type SignUpResponse = {
+  __typename?: 'SignUpResponse';
+  message: Scalars['String']['output'];
 };
 
 export type User = {
@@ -161,8 +167,10 @@ export type ResolversTypes = {
   CourseClassStatus: CourseClassStatus;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  LoginResponse: ResolverTypeWrapper<LoginResponse>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
+  SignUpResponse: ResolverTypeWrapper<SignUpResponse>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   User: ResolverTypeWrapper<User>;
   UserInput: UserInput;
@@ -175,8 +183,10 @@ export type ResolversParentTypes = {
   CourseClass: CourseClass;
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
+  LoginResponse: LoginResponse;
   Mutation: {};
   Query: {};
+  SignUpResponse: SignUpResponse;
   String: Scalars['String']['output'];
   User: User;
   UserInput: UserInput;
@@ -193,14 +203,25 @@ export type CourseClassResolvers<ContextType = any, ParentType extends Resolvers
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type LoginResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['LoginResponse'] = ResolversParentTypes['LoginResponse']> = {
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  token?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  login?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'password' | 'username'>>;
-  signUp?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationSignUpArgs, 'userInput'>>;
+  login?: Resolver<Maybe<ResolversTypes['LoginResponse']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
+  signUp?: Resolver<Maybe<ResolversTypes['SignUpResponse']>, ParentType, ContextType, RequireFields<MutationSignUpArgs, 'userInput'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   courseClass?: Resolver<Maybe<ResolversTypes['CourseClass']>, ParentType, ContextType, RequireFields<QueryCourseClassArgs, 'id'>>;
-  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
+  profile?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+};
+
+export type SignUpResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['SignUpResponse'] = ResolversParentTypes['SignUpResponse']> = {
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
@@ -213,8 +234,10 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
 
 export type Resolvers<ContextType = any> = {
   CourseClass?: CourseClassResolvers<ContextType>;
+  LoginResponse?: LoginResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  SignUpResponse?: SignUpResponseResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 };
 
