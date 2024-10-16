@@ -32,10 +32,12 @@ type Query {
 
 type Mutation {
   login(email: String!, password: String!): LoginResponse
-  signUp(userInput: UserInput!): SignUpResponse
+  signUp(userInput: UserInput!): Response
+  logout: Response
+  editProfile(userUpdateInput: UserUpdateInput!): Response
 }
 
-type SignUpResponse {
+type Response {
   message: String!
 }
 
@@ -45,8 +47,14 @@ type LoginResponse {
 }
 
 input UserInput {
-  email: String!
-  password: String!
-  fullName: String!
-  role: UserRole!
+  fullName: String
+  password: String
+  email: String
+  role: UserRole
+}
+
+input UserUpdateInput {
+  fullName: String
+  oldPassword: String
+  newPassword: String
 }

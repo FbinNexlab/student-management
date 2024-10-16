@@ -9,4 +9,8 @@ export class UsersRepo {
   async createNewUser(user: User) {
     return AppDataSource.manager.save(user);
   } 
+
+  async updateUser(user: User) {
+    return AppDataSource.manager.save(user);
+  }
 }

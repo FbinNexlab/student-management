@@ -40,8 +40,15 @@ export type LoginResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  editProfile?: Maybe<Response>;
   login?: Maybe<LoginResponse>;
-  signUp?: Maybe<SignUpResponse>;
+  logout?: Maybe<Response>;
+  signUp?: Maybe<Response>;
+};
+
+
+export type MutationEditProfileArgs = {
+  userUpdateInput: UserUpdateInput;
 };
 
 
@@ -66,8 +73,8 @@ export type QueryCourseClassArgs = {
   id: Scalars['ID']['input'];
 };
 
-export type SignUpResponse = {
-  __typename?: 'SignUpResponse';
+export type Response = {
+  __typename?: 'Response';
   message: Scalars['String']['output'];
 };
 
@@ -80,16 +87,22 @@ export type User = {
 };
 
 export type UserInput = {
-  email: Scalars['String']['input'];
-  fullName: Scalars['String']['input'];
-  password: Scalars['String']['input'];
-  role: UserRole;
+  email?: InputMaybe<Scalars['String']['input']>;
+  fullName?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  role?: InputMaybe<UserRole>;
 };
 
 export enum UserRole {
   Lecturer = 'LECTURER',
   Student = 'STUDENT'
 }
+
+export type UserUpdateInput = {
+  fullName?: InputMaybe<Scalars['String']['input']>;
+  newPassword?: InputMaybe<Scalars['String']['input']>;
+  oldPassword?: InputMaybe<Scalars['String']['input']>;
+};
 
 
 
@@ -170,11 +183,12 @@ export type ResolversTypes = {
   LoginResponse: ResolverTypeWrapper<LoginResponse>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
-  SignUpResponse: ResolverTypeWrapper<SignUpResponse>;
+  Response: ResolverTypeWrapper<Response>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   User: ResolverTypeWrapper<User>;
   UserInput: UserInput;
   UserRole: UserRole;
+  UserUpdateInput: UserUpdateInput;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -186,10 +200,11 @@ export type ResolversParentTypes = {
   LoginResponse: LoginResponse;
   Mutation: {};
   Query: {};
-  SignUpResponse: SignUpResponse;
+  Response: Response;
   String: Scalars['String']['output'];
   User: User;
   UserInput: UserInput;
+  UserUpdateInput: UserUpdateInput;
 };
 
 export type CourseClassResolvers<ContextType = any, ParentType extends ResolversParentTypes['CourseClass'] = ResolversParentTypes['CourseClass']> = {
@@ -210,8 +225,10 @@ export type LoginResponseResolvers<ContextType = any, ParentType extends Resolve
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  editProfile?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<MutationEditProfileArgs, 'userUpdateInput'>>;
   login?: Resolver<Maybe<ResolversTypes['LoginResponse']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
-  signUp?: Resolver<Maybe<ResolversTypes['SignUpResponse']>, ParentType, ContextType, RequireFields<MutationSignUpArgs, 'userInput'>>;
+  logout?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType>;
+  signUp?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<MutationSignUpArgs, 'userInput'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
@@ -219,7 +236,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   profile?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
 };
 
-export type SignUpResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['SignUpResponse'] = ResolversParentTypes['SignUpResponse']> = {
+export type ResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['Response'] = ResolversParentTypes['Response']> = {
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -237,7 +254,7 @@ export type Resolvers<ContextType = any> = {
   LoginResponse?: LoginResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
-  SignUpResponse?: SignUpResponseResolvers<ContextType>;
+  Response?: ResponseResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 };
 

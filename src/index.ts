@@ -5,6 +5,8 @@ import * as Jwt from "jsonwebtoken";
 import { UsersRepo } from "./repos/users.repo";
 import resolvers from "./resolvers/resolvers";
 
+require("dotenv").config();
+
 const typeDefs = readFileSync("src/schema.graphql", { encoding: "utf-8" });
 
 interface MyContext {
@@ -21,7 +23,8 @@ const server = new ApolloServer<MyContext>({
 async function startServer() {
   const { url } = await startStandaloneServer(server, {
     context: async ({ req, res }) => {
-      const token = req.headers.authorization || "";
+      const authorization = req.headers.authorization || "";
+      const token = authorization.replace("Bearer ", "");
       let user = null;
 
       // Validate the token
@@ -35,9 +38,9 @@ async function startServer() {
       }
 
       return {
+        user,
         dataSources: {
           usersRepo: new UsersRepo(),
-          user,
         },
       };
     },
