@@ -1,6 +1,7 @@
 type User {
   id: ID!
-  username: String!
+  fullName: String!
+  email: String!
   role: UserRole!
 }
 
@@ -35,7 +36,8 @@ type Mutation {
 }
 
 input UserInput {
-  username: String!
-  password: String!
+  email: String! 
+  password: String! 
+  fullName: String! 
   role: UserRole!
 }

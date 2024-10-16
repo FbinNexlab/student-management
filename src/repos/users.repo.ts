@@ -2,8 +2,8 @@ import { AppDataSource } from "../data-source";
 import { User } from "../entities/user.entity";
 
 export class UsersRepo {
-  async getUserById(id: number) {
-    return AppDataSource.manager.findOneBy(User, { id });
+  async getUserByEmail(email: string) {
+    return AppDataSource.manager.findOneBy(User, { email });
   }
 
   async createNewUser(user: User) {

@@ -67,15 +67,17 @@ export type QueryUserArgs = {
 
 export type User = {
   __typename?: 'User';
+  email: Scalars['String']['output'];
+  fullName: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   role: UserRole;
-  username: Scalars['String']['output'];
 };
 
 export type UserInput = {
+  email: Scalars['String']['input'];
+  fullName: Scalars['String']['input'];
   password: Scalars['String']['input'];
   role: UserRole;
-  username: Scalars['String']['input'];
 };
 
 export enum UserRole {
@@ -202,9 +204,10 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  fullName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   role?: Resolver<ResolversTypes['UserRole'], ParentType, ContextType>;
-  username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
