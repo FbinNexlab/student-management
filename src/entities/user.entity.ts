@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { UserRole } from "../enums/user-role.enum";
+import { UserRole } from "../generated/graphql";
 
 @Entity()
 export class User {

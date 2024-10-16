@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { CourseClassStatus } from "../enums/course-class-status.enum";
+import { CourseClassStatus } from "../generated/graphql";
 
 @Entity()
 export class CourseClass {
@@ -18,6 +18,6 @@ export class CourseClass {
   @Column({ name: "number_of_student" })
   numberOfStudent: number;
 
-  @Column({name: "status"})
+  @Column({ name: "status" })
   status: CourseClassStatus;
 }

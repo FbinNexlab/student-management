@@ -1,19 +1,34 @@
-import dotenv from "dotenv";
-import express, { Express, Request, Response } from "express";
-import { AppDataSource } from "./data-source";
-import { User } from "./entities/user.entity";
+import { ApolloServer } from "@apollo/server";
+import { startStandaloneServer } from "@apollo/server/standalone";
+import { readFileSync } from "fs";
+import { UsersRepo } from "./repos/users.repo";
+import resolvers from "./resolvers/resolvers";
 
-dotenv.config();
+const typeDefs = readFileSync("src/schema.graphql", { encoding: "utf-8" });
 
-const app: Express = express();
-const port = process.env.PORT || 3000;
+interface MyContext {
+  dataSources: {
+    usersRepo: UsersRepo;
+  };
+}
 
-app.get("/", async (req: Request, res: Response) => {
-  const users = await AppDataSource.manager.find(User);
-  console.log(users);
-  res.send("Express + TypeScript Server 12345");
+const server = new ApolloServer<MyContext>({
+  typeDefs,
+  resolvers,
 });
 
-app.listen(port, () => {
-  console.log(`[server123]: Server is running at http://localhost:${port}`);
-});
+async function startServer() {
+  const { url } = await startStandaloneServer(server, {
+    context: async () => {
+      return {
+        dataSources: {
+          usersRepo: new UsersRepo(),
+        },
+      };
+    },
+  });
+
+  console.log(`🚀 Server listening at: ${url}`);
+}
+
+startServer();

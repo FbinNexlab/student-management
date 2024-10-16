@@ -1,0 +1,41 @@
+type User {
+  id: ID!
+  username: String!
+  role: UserRole!
+}
+
+enum UserRole {
+  STUDENT
+  LECTURER
+}
+
+type CourseClass {
+  id: ID!
+  className: String!
+  courseName: String!
+  numberOfStudent: Int!
+  status: CourseClassStatus!
+  idClassMonitor: ID!
+  idLecturer: ID!
+}
+
+enum CourseClassStatus {
+  OPEN
+  CLOSE
+}
+
+type Query {
+  user(id: ID!): User
+  courseClass(id: ID!): CourseClass
+}
+
+type Mutation {
+  login(username: String!, password: String!): String
+  signUp(userInput: UserInput!): User
+}
+
+input UserInput {
+  username: String!
+  password: String!
+  role: UserRole!
+}
