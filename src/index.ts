@@ -1,21 +1,22 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { readFileSync } from "fs";
-import * as Jwt from "jsonwebtoken";
+import { JwtPayload } from "jsonwebtoken";
 import { UsersRepo } from "./repos/users.repo";
 import resolvers from "./resolvers/resolvers";
+import { JwtService } from "./services/jwt.service";
+import { UsersService } from "./services/users.service";
 
 require("dotenv").config();
 
 const typeDefs = readFileSync("src/schema.graphql", { encoding: "utf-8" });
 
-interface MyContext {
-  dataSources: {
-    usersRepo: UsersRepo;
-  };
+export interface AppContext {
+  user: JwtPayload | null;
+  usersService: UsersService;
 }
 
-const server = new ApolloServer<MyContext>({
+const server = new ApolloServer<AppContext>({
   typeDefs,
   resolvers,
 });
@@ -25,23 +26,24 @@ async function startServer() {
     context: async ({ req, res }) => {
       const authorization = req.headers.authorization || "";
       const token = authorization.replace("Bearer ", "");
-      let user = null;
+      const usersRepo = new UsersRepo();
+      const jwtService: JwtService = new JwtService();
+      let user: JwtPayload | null = null;
 
       // Validate the token
       if (token) {
         try {
-          user = Jwt.verify(token, process.env.JWT_SECRET || "secret");
+          user = jwtService.verify(token);
         } catch (error) {
-          console.error("Invalid token", error);
           user = null;
+          console.error("Invalid token", error);
         }
       }
 
       return {
         user,
-        dataSources: {
-          usersRepo: new UsersRepo(),
-        },
+        // Perform dependency injection
+        usersService: new UsersService(usersRepo, jwtService),
       };
     },
   });

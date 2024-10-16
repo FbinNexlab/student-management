@@ -1,14 +1,12 @@
+import { AppContext } from "..";
 import { QueryResolvers } from "../generated/graphql";
 const queries: QueryResolvers = {
-  courseClass: async (_, { id }, { dataSources }) => {
-    return dataSources.userRepo.getCourseClassById(id);
-  },
-  profile: async (_, {}, { user, dataSources }) => {
+  profile: async (_, {}, { user, usersService }: AppContext) => {
     if (!user) {
       throw new Error("User unauthorized");
     }
 
-    return user;
+    return usersService.getProfile(user.email);
   },
 };
 
