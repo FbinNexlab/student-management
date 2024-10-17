@@ -1,5 +1,6 @@
 import { CourseClass } from "../entities/course-class.entity";
-import { CourseClassNotFoundError } from "../errors/common.error";
+import { PermissionError } from "../errors/auth.error";
+import { CourseClassNotFoundError, UserNotFoundError } from "../errors/common.error";
 import { CourseClassStatus, UpdateCourseClassInput, UserRole } from "../generated/graphql";
 import { CourseClassesRepo } from "../repos/course-classes.repo";
 import { UsersRepo } from "../repos/users.repo";
@@ -8,28 +9,41 @@ import { CreateCourseClassInput } from "./../generated/graphql";
 export class CourseClassesService {
   constructor(private courseClassesRepo: CourseClassesRepo, private usersRepo: UsersRepo) {}
 
-  async createNewClass(createCourseClassInput: CreateCourseClassInput, lecturerId: number) {
+  async getClassListOfStudent(classId: number) {}
+
+  async getClassListOfLecturer(lecturerId: number) {}
+
+  async createNewClass(createCourseClassInput: CreateCourseClassInput, lecturerEmail: string) {
     // Check if the class monitor exists
     const classMonitor = await this.usersRepo.getUserByEmail(createCourseClassInput.emailClassMonitor);
     if (!classMonitor || classMonitor.role !== UserRole.Student) {
       throw new Error("Monitor's email is invalid");
     }
 
+    const lecturer = await this.usersRepo.getUserByEmail(lecturerEmail);
+    if (!lecturer) {
+      throw UserNotFoundError;
+    }
+
     const courseClass = new CourseClass();
     courseClass.className = createCourseClassInput.className;
     courseClass.courseName = createCourseClassInput.courseName;
-    courseClass.idClassMonitor = classMonitor.id;
     courseClass.numberOfStudent = 0;
     courseClass.status = CourseClassStatus.Close;
-    courseClass.idLecturer = lecturerId;
+    courseClass.lecturer = lecturer;
+    courseClass.classMonitor = classMonitor;
 
     await this.courseClassesRepo.saveClass(courseClass);
   }
 
-  async updateClass(classId: number, updateCourseClassInput: UpdateCourseClassInput) {
+  async updateClass(classId: number, updateCourseClassInput: UpdateCourseClassInput, lecturerId: number) {
     const courseClass = await this.courseClassesRepo.getClassById(classId);
     if (!courseClass) {
       throw CourseClassNotFoundError;
+    }
+
+    if (courseClass.lecturer.id !== lecturerId) {
+      throw PermissionError;
     }
 
     if (updateCourseClassInput.className) {
@@ -46,7 +60,7 @@ export class CourseClassesService {
         throw new Error("Monitor's email is invalid");
       }
 
-      courseClass.idClassMonitor = classMonitor.id;
+      courseClass.classMonitor = classMonitor;
     }
 
     if (updateCourseClassInput.status) {
@@ -56,10 +70,14 @@ export class CourseClassesService {
     await this.courseClassesRepo.saveClass(courseClass);
   }
 
-  async deleteClass(classId: number) {
+  async deleteClass(classId: number, lecturerId: number) {
     const courseClass = await this.courseClassesRepo.getClassById(classId);
     if (!courseClass) {
       throw CourseClassNotFoundError;
+    }
+
+    if (courseClass.lecturer.id !== lecturerId) {
+      throw PermissionError;
     }
 
     // Check the number of students in the class

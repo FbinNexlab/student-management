@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { UserRole } from "../generated/graphql";
+import { CourseClass } from "./course-class.entity";
 
 @Entity()
 export class User {
@@ -10,11 +11,17 @@ export class User {
   email: string;
 
   @Column()
-  password: string;
+  password: string; 
 
   @Column()
   fullName: string;
 
   @Column()
   role: UserRole;
+
+  @OneToMany(() => CourseClass, (courseClass) => courseClass.lecturer)
+  lecturerCourseClasses: CourseClass[];
+
+  @OneToMany(() => CourseClass, (courseClass) => courseClass.classMonitor)
+  monitorCourseClasses: CourseClass[];
 }

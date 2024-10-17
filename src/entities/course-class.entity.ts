@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { CourseClassStatus } from "../generated/graphql";
+import { User } from "./user.entity";
 
 @Entity()
 export class CourseClass {
@@ -12,15 +13,18 @@ export class CourseClass {
   @Column({ name: "course_name" })
   courseName: string;
 
-  @Column({ name: "id_class_monitor" })
-  idClassMonitor: number;
-
-  @Column({ name: "id_lecturer" })
-  idLecturer: number;
-
   @Column({ name: "number_of_student" })
   numberOfStudent: number;
 
   @Column({ name: "status" })
   status: CourseClassStatus;
+
+  @ManyToOne(() => User, (user) => user.monitorCourseClasses)
+  @JoinColumn({ name: "id_class_monitor" })
+  classMonitor: User;
+
+  @ManyToOne(() => User, (user) => user.lecturerCourseClasses)
+  @JoinColumn({ name: "id_lecturer" })
+  lecturer: User;
 }
+  

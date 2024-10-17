@@ -90,6 +90,7 @@ export type MutationUpdateCourseClassArgs = {
 export type Query = {
   __typename?: 'Query';
   courseClass?: Maybe<CourseClass>;
+  courseClassList: Array<Maybe<CourseClass>>;
   profile?: Maybe<User>;
 };
 
@@ -272,6 +273,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   courseClass?: Resolver<Maybe<ResolversTypes['CourseClass']>, ParentType, ContextType, RequireFields<QueryCourseClassArgs, 'id'>>;
+  courseClassList?: Resolver<Array<Maybe<ResolversTypes['CourseClass']>>, ParentType, ContextType>;
   profile?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
 };
 

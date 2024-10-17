@@ -105,7 +105,7 @@ const mutations: MutationResolvers = {
       .email("Monitor's email is invalid.")
       .validate(createCourseClassInput.emailClassMonitor);
 
-    await courseClassesService.createNewClass(createCourseClassInput, user.userId);
+    await courseClassesService.createNewClass(createCourseClassInput, user.email);
 
     return {
       message: "Course class created successfully",
@@ -127,7 +127,7 @@ const mutations: MutationResolvers = {
     await yup.string().email("Monitor's email is invalid.").validate(updateCourseClassInput.emailClassMonitor);
     await yup.string().oneOf(Object.values(CourseClassStatus), "Status is invalid.").validate(updateCourseClassInput.status);
 
-    await courseClassesService.updateClass(id, updateCourseClassInput);
+    await courseClassesService.updateClass(id, updateCourseClassInput, user.userId);
 
     return {
       message: "Course class updated successfully",
@@ -143,7 +143,7 @@ const mutations: MutationResolvers = {
       throw PermissionError;
     }
 
-    await courseClassesService.deleteClass(id);
+    await courseClassesService.deleteClass(id, user.userId);
 
     return {
       message: "Course class deleted successfully",

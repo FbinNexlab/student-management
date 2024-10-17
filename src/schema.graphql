@@ -27,6 +27,7 @@ enum CourseClassStatus {
 
 type Query {
   profile: User
+  courseClassList: [CourseClass]!
   courseClass(id: ID!): CourseClass
 }
 
