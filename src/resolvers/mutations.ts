@@ -42,6 +42,18 @@ const mutations: MutationResolvers = {
     };
   },
 
+  logout: async (_, {}, { user, usersService }: AppContext) => {
+    if (!user) {
+      throw new Error("User unauthorized");
+    }
+
+    await usersService.logout(user.jti);
+
+    return {
+      message: "Logout successful",
+    };
+  },
+
   editProfile: async (_, { userUpdateInput }, { user, usersService }: AppContext) => {
     if (!user) {
       throw new Error("User unauthorized");
@@ -63,16 +75,6 @@ const mutations: MutationResolvers = {
 
     return {
       message: "Profile updated successfully",
-    };
-  },
-  
-  logout: async (_, {}, { user }) => {
-    if (!user) {
-      throw new Error("User unauthorized");
-    }
-
-    return {
-      message: "Logout successful",
     };
   },
 };

@@ -3,7 +3,7 @@ import { User } from "../entities/user.entity";
 import { User as UserDto, UserRole } from "../generated/graphql";
 import { UsersMapper } from "../mappers/users.mapper";
 import { UsersRepo } from "../repos/users.repo";
-import { JwtService } from "./jwt.service";
+import { JwtPayload, JwtService } from "./jwt.service";
 
 export class UsersService {
   constructor(private usersRepo: UsersRepo, private jwtService: JwtService) {}
@@ -40,9 +40,15 @@ export class UsersService {
     }
 
     // Sign a JWT token
-    const token = await this.jwtService.sign({ userId: user.id, email: user.email, role: user.role });
+    const jwtPayload: JwtPayload = { userId: user.id, email: user.email, role: user.role };
+    const token = await this.jwtService.sign(jwtPayload);
 
     return token;
+  }
+
+  async logout(jti: string) {
+    // Invalidate the token
+    this.jwtService.invalidateToken(jti);
   }
 
   async getProfile(email: string): Promise<UserDto> {
