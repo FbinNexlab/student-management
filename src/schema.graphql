@@ -38,6 +38,7 @@ type Mutation {
 
   createCourseClass(createCourseClassInput: CreateCourseClassInput!): Response
   deleteCourseClass(id: ID!): Response
+  updateCourseClass(id: ID!, updateCourseClassInput: UpdateCourseClassInput!): Response
 }
 
 type Response {
@@ -66,4 +67,11 @@ input CreateCourseClassInput {
   className: String
   courseName: String
   emailClassMonitor: String
+}
+
+input UpdateCourseClassInput {
+  className: String
+  courseName: String
+  emailClassMonitor: String
+  status: CourseClassStatus
 }

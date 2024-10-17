@@ -4,6 +4,7 @@ import { User as UserDto, UserRole } from "../generated/graphql";
 import { UsersMapper } from "../mappers/users.mapper";
 import { UsersRepo } from "../repos/users.repo";
 import { JwtPayload, JwtService } from "./jwt.service";
+import { UserNotFoundError } from "../errors/common.error";
 
 export class UsersService {
   constructor(private usersRepo: UsersRepo, private jwtService: JwtService) {}
@@ -30,7 +31,7 @@ export class UsersService {
     // Check if the user exists
     const user: User = await this.usersRepo.getUserByEmail(email);
     if (!user) {
-      throw new Error("User not found");
+      throw UserNotFoundError;
     }
 
     // Check if the password is correct
@@ -54,7 +55,7 @@ export class UsersService {
   async getProfile(email: string): Promise<UserDto> {
     const user: User = await this.usersRepo.getUserByEmail(email);
     if (!user) {
-      throw new Error("User not found");
+      throw UserNotFoundError;
     }
 
     return UsersMapper.toUserDto(user);
@@ -63,7 +64,7 @@ export class UsersService {
   async updateProfile(email: string, fullName: string, oldPassword: string, newPassword: string) {
     const existingUser: User = await this.usersRepo.getUserByEmail(email);
     if (!existingUser) {
-      throw new Error("User not found");
+      throw UserNotFoundError;
     }
 
     // Update the user

@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import { AppContext } from "..";
 import { PermissionError, UnauthorizedError } from "../errors/auth.error";
-import { MutationResolvers, UserRole } from "../generated/graphql";
+import { CourseClassStatus, MutationResolvers, UserRole } from "../generated/graphql";
 
 const mutations: MutationResolvers = {
   signUp: async (_, { userInput }, { usersService }: AppContext) => {
@@ -109,6 +109,28 @@ const mutations: MutationResolvers = {
 
     return {
       message: "Course class created successfully",
+    };
+  },
+
+  updateCourseClass: async (_, { id, updateCourseClassInput }, { user, courseClassesService }: AppContext) => {
+    if (!user) {
+      throw UnauthorizedError;
+    }
+
+    if (user.role !== UserRole.Lecturer) {
+      throw PermissionError;
+    }
+
+    // Validate input
+    await yup.string().max(255, "Class name is too long.").validate(updateCourseClassInput.className);
+    await yup.string().max(255, "Course name is too long.").validate(updateCourseClassInput.courseName);
+    await yup.string().email("Monitor's email is invalid.").validate(updateCourseClassInput.emailClassMonitor);
+    await yup.string().oneOf(Object.values(CourseClassStatus), "Status is invalid.").validate(updateCourseClassInput.status);
+
+    await courseClassesService.updateClass(id, updateCourseClassInput);
+
+    return {
+      message: "Course class updated successfully",
     };
   },
 

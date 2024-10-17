@@ -52,6 +52,7 @@ export type Mutation = {
   login?: Maybe<LoginResponse>;
   logout?: Maybe<Response>;
   signUp?: Maybe<Response>;
+  updateCourseClass?: Maybe<Response>;
 };
 
 
@@ -80,6 +81,12 @@ export type MutationSignUpArgs = {
   userInput: UserInput;
 };
 
+
+export type MutationUpdateCourseClassArgs = {
+  id: Scalars['ID']['input'];
+  updateCourseClassInput: UpdateCourseClassInput;
+};
+
 export type Query = {
   __typename?: 'Query';
   courseClass?: Maybe<CourseClass>;
@@ -94,6 +101,13 @@ export type QueryCourseClassArgs = {
 export type Response = {
   __typename?: 'Response';
   message: Scalars['String']['output'];
+};
+
+export type UpdateCourseClassInput = {
+  className?: InputMaybe<Scalars['String']['input']>;
+  courseName?: InputMaybe<Scalars['String']['input']>;
+  emailClassMonitor?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<CourseClassStatus>;
 };
 
 export type User = {
@@ -204,6 +218,7 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   Response: ResolverTypeWrapper<Response>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
+  UpdateCourseClassInput: UpdateCourseClassInput;
   User: ResolverTypeWrapper<User>;
   UserInput: UserInput;
   UserRole: UserRole;
@@ -222,6 +237,7 @@ export type ResolversParentTypes = {
   Query: {};
   Response: Response;
   String: Scalars['String']['output'];
+  UpdateCourseClassInput: UpdateCourseClassInput;
   User: User;
   UserInput: UserInput;
   UserUpdateInput: UserUpdateInput;
@@ -251,6 +267,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   login?: Resolver<Maybe<ResolversTypes['LoginResponse']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
   logout?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType>;
   signUp?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<MutationSignUpArgs, 'userInput'>>;
+  updateCourseClass?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<MutationUpdateCourseClassArgs, 'id' | 'updateCourseClassInput'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
