@@ -13,7 +13,10 @@ export class CourseClass {
   courseName: string;
 
   @Column({ name: "id_class_monitor" })
-  idClassMonitor: string;
+  idClassMonitor: number;
+
+  @Column({ name: "id_lecturer" })
+  idLecturer: number;
 
   @Column({ name: "number_of_student" })
   numberOfStudent: number;

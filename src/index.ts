@@ -7,6 +7,8 @@ import { UsersRepo } from "./repos/users.repo";
 import resolvers from "./resolvers/resolvers";
 import { JwtPayload, JwtService } from "./services/jwt.service";
 import { UsersService } from "./services/users.service";
+import { CourseClassesService } from "./services/course-classes.service";
+import { CourseClassesRepo } from "./repos/course-classes.repo";
 
 require("dotenv").config();
 
@@ -15,6 +17,7 @@ const typeDefs = readFileSync("src/schema.graphql", { encoding: "utf-8" });
 export interface AppContext {
   user: JwtPayload | null;
   usersService: UsersService;
+  courseClassesService: CourseClassesService;
 }
 
 const server = new ApolloServer<AppContext>({
@@ -32,7 +35,7 @@ const validateToken = async (token: string, jwtService: JwtService) => {
   if (token) {
     try {
       user = jwtService.verify(token);
-      
+
       // Check if the token is invalidated
       const isInvalidated = await jwtService.isTokenInvalidated(user.jti);
       if (isInvalidated) {
@@ -49,7 +52,6 @@ const validateToken = async (token: string, jwtService: JwtService) => {
 };
 
 async function startServer() {
-  const usersRepo = new UsersRepo();
   const redis = new Redis({
     host: process.env.REDIS_HOST || "localhost",
     port: parseInt(process.env.REDIS_PORT || "6379"),
@@ -57,6 +59,10 @@ async function startServer() {
     password: process.env.REDIS_PASSWORD || "default",
   });
   const jwtService: JwtService = new JwtService(redis);
+  const usersRepo = new UsersRepo();
+  const courseClassesRepo = new CourseClassesRepo();
+  const usersService = new UsersService(usersRepo, jwtService);
+  const courseClassesService = new CourseClassesService(courseClassesRepo, usersRepo);
 
   const { url } = await startStandaloneServer(server, {
     context: async ({ req }) => {
@@ -65,8 +71,8 @@ async function startServer() {
 
       return {
         user,
-        // Perform dependency injection
-        usersService: new UsersService(usersRepo, jwtService),
+        usersService,
+        courseClassesService
       };
     },
   });

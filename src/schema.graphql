@@ -35,6 +35,8 @@ type Mutation {
   signUp(userInput: UserInput!): Response
   logout: Response
   editProfile(userUpdateInput: UserUpdateInput!): Response
+
+  createCourseClass(createCourseClassInput: CreateCourseClassInput!): Response
 }
 
 type Response {
@@ -57,4 +59,10 @@ input UserUpdateInput {
   fullName: String
   oldPassword: String
   newPassword: String
+}
+
+input CreateCourseClassInput {
+  className: String
+  courseName: String
+  emailClassMonitor: String
 }

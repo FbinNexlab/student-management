@@ -1,5 +1,6 @@
 import * as yup from "yup";
 import { AppContext } from "..";
+import { PermissionError, UnauthorizedError } from "../errors/auth.error";
 import { MutationResolvers, UserRole } from "../generated/graphql";
 
 const mutations: MutationResolvers = {
@@ -44,7 +45,7 @@ const mutations: MutationResolvers = {
 
   logout: async (_, {}, { user, usersService }: AppContext) => {
     if (!user) {
-      throw new Error("User unauthorized");
+      throw UnauthorizedError;
     }
 
     await usersService.logout(user.jti);
@@ -56,7 +57,7 @@ const mutations: MutationResolvers = {
 
   editProfile: async (_, { userUpdateInput }, { user, usersService }: AppContext) => {
     if (!user) {
-      throw new Error("User unauthorized");
+      throw UnauthorizedError;
     }
 
     // Validate the user input
@@ -75,6 +76,39 @@ const mutations: MutationResolvers = {
 
     return {
       message: "Profile updated successfully",
+    };
+  },
+
+  createCourseClass: async (_, { createCourseClassInput }, { user, courseClassesService }: AppContext) => {
+    if (!user) {
+      throw UnauthorizedError;
+    }
+
+    if (user.role !== UserRole.Lecturer) {
+      throw PermissionError;
+    }
+
+    // Validate input
+    await yup
+      .string()
+      .required("Class name is required.")
+      .max(255, "Class name is too long.")
+      .validate(createCourseClassInput.className);
+    await yup
+      .string()
+      .required("Course name is required.")
+      .max(255, "Course name is too long.")
+      .validate(createCourseClassInput.courseName);
+    await yup
+      .string()
+      .required("Monitor's email is required")
+      .email("Monitor's email is invalid.")
+      .validate(createCourseClassInput.emailClassMonitor);
+
+    await courseClassesService.createNewClass(createCourseClassInput, user.userId);
+
+    return {
+      message: "Course class created successfully",
     };
   },
 };

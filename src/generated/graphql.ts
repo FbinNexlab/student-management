@@ -32,6 +32,12 @@ export enum CourseClassStatus {
   Open = 'OPEN'
 }
 
+export type CreateCourseClassInput = {
+  className?: InputMaybe<Scalars['String']['input']>;
+  courseName?: InputMaybe<Scalars['String']['input']>;
+  emailClassMonitor?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type LoginResponse = {
   __typename?: 'LoginResponse';
   message: Scalars['String']['output'];
@@ -40,10 +46,16 @@ export type LoginResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createCourseClass?: Maybe<Response>;
   editProfile?: Maybe<Response>;
   login?: Maybe<LoginResponse>;
   logout?: Maybe<Response>;
   signUp?: Maybe<Response>;
+};
+
+
+export type MutationCreateCourseClassArgs = {
+  createCourseClassInput: CreateCourseClassInput;
 };
 
 
@@ -178,6 +190,7 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   CourseClass: ResolverTypeWrapper<CourseClass>;
   CourseClassStatus: CourseClassStatus;
+  CreateCourseClassInput: CreateCourseClassInput;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   LoginResponse: ResolverTypeWrapper<LoginResponse>;
@@ -195,6 +208,7 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
   CourseClass: CourseClass;
+  CreateCourseClassInput: CreateCourseClassInput;
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
   LoginResponse: LoginResponse;
@@ -225,6 +239,7 @@ export type LoginResponseResolvers<ContextType = any, ParentType extends Resolve
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  createCourseClass?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<MutationCreateCourseClassArgs, 'createCourseClassInput'>>;
   editProfile?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<MutationEditProfileArgs, 'userUpdateInput'>>;
   login?: Resolver<Maybe<ResolversTypes['LoginResponse']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
   logout?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType>;

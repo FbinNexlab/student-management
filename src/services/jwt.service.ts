@@ -14,7 +14,9 @@ export class JwtService {
   async sign(payload: JwtPayload): Promise<string> {
     // Add a unique identifier to the JWT payload
     payload.jti = uuidv4();
-    return Jwt.sign(payload, process.env.JWT_SECRET || "secret", { expiresIn: process.env.JWT_EXPIRES_IN || 3600 });
+    return Jwt.sign(payload, process.env.JWT_SECRET || "secret", {
+      expiresIn: (parseInt(process.env.JWT_EXPIRES_IN) || 3600) * 1000,
+    });
   }
 
   verify(token: string): JwtPayload {
