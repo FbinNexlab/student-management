@@ -24,4 +24,18 @@ export class CourseClassesService {
 
     await this.courseClassesRepo.saveClass(courseClass);
   }
+
+  async deleteClass(classId: number) {
+    const courseClass = await this.courseClassesRepo.getClassById(classId);
+    if (!courseClass) {
+      throw new Error("Class not found");
+    }
+    
+    // Check the number of students in the class
+    if (courseClass.numberOfStudent >= 5) {
+      throw new Error("Can not delete, this class has more than 5 students");
+    }
+    
+    await this.courseClassesRepo.deleteClass(classId);
+  }
 }

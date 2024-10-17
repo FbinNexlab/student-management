@@ -9,7 +9,7 @@ export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' |
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
+  ID: { input: number; output: number; }
   String: { input: string; output: string; }
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
@@ -47,6 +47,7 @@ export type LoginResponse = {
 export type Mutation = {
   __typename?: 'Mutation';
   createCourseClass?: Maybe<Response>;
+  deleteCourseClass?: Maybe<Response>;
   editProfile?: Maybe<Response>;
   login?: Maybe<LoginResponse>;
   logout?: Maybe<Response>;
@@ -56,6 +57,11 @@ export type Mutation = {
 
 export type MutationCreateCourseClassArgs = {
   createCourseClassInput: CreateCourseClassInput;
+};
+
+
+export type MutationDeleteCourseClassArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -240,6 +246,7 @@ export type LoginResponseResolvers<ContextType = any, ParentType extends Resolve
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createCourseClass?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<MutationCreateCourseClassArgs, 'createCourseClassInput'>>;
+  deleteCourseClass?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<MutationDeleteCourseClassArgs, 'id'>>;
   editProfile?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<MutationEditProfileArgs, 'userUpdateInput'>>;
   login?: Resolver<Maybe<ResolversTypes['LoginResponse']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
   logout?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType>;

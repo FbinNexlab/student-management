@@ -6,7 +6,7 @@ export class UsersMapper {
     const userDto: UserDto = {
       email: user.email,
       fullName: user.fullName,
-      id: user.id.toString(),
+      id: user.id,
       role: user.role,
     };
 
@@ -17,7 +17,7 @@ export class UsersMapper {
     const user: User = new User();
     user.email = userDto.email;
     user.fullName = userDto.fullName;
-    user.id = parseInt(userDto.id);
+    user.id = userDto.id
     user.role = userDto.role;
 
     return user;

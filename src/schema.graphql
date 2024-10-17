@@ -37,6 +37,7 @@ type Mutation {
   editProfile(userUpdateInput: UserUpdateInput!): Response
 
   createCourseClass(createCourseClassInput: CreateCourseClassInput!): Response
+  deleteCourseClass(id: ID!): Response
 }
 
 type Response {

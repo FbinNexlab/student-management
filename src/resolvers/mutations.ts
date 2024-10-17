@@ -111,6 +111,22 @@ const mutations: MutationResolvers = {
       message: "Course class created successfully",
     };
   },
+
+  deleteCourseClass: async (_, { id }, { user, courseClassesService }: AppContext) => {
+    if (!user) {
+      throw UnauthorizedError;
+    }
+
+    if (user.role !== UserRole.Lecturer) {
+      throw PermissionError;
+    }
+
+    await courseClassesService.deleteClass(id);
+
+    return {
+      message: "Course class deleted successfully",
+    };
+  },
 };
 
 export default mutations;
