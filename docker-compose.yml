@@ -1,7 +1,6 @@
 services:
   postgresdb:
     image: postgres
-    container_name: postgresdb
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
@@ -10,14 +9,25 @@ services:
       - "5432:5432"
     volumes:
       - ~/data:/var/lib/postgresql/data
-  student-management:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: base
-    volumes:
-      - ./src:/home/node/app/src
-    container_name: student-management
+  # student-management:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #     target: base
+  #   volumes:
+  #     - ./src:/home/node/app/src
+  #   environment:
+  #     DB_HOST: postgresdb
+  #     DB_PORT: 5432
+  #     DB_USERNAME: postgres
+  #     DB_PASSWORD: 1234
+  #   ports:
+  #     - "4000:4000"
+  #   command: npm run start
+  #   depends_on:
+  #     - postgresdb
+  student-management: 
+    image: fbin243/student-management
     environment:
       DB_HOST: postgresdb
       DB_PORT: 5432
@@ -25,6 +35,8 @@ services:
       DB_PASSWORD: 1234
     ports:
       - "4000:4000"
-    command: npm run start
     depends_on:
       - postgresdb
+    volumes:
+      - ./src:/home/node/app/src
+    command: npm run start
