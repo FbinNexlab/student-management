@@ -16,8 +16,9 @@ type CourseClass {
   courseName: String!
   numberOfStudent: Int!
   status: CourseClassStatus!
-  idClassMonitor: ID!
-  idLecturer: ID!
+  classMonitor: User!
+  lecturer: User!
+  students: [User]!
 }
 
 enum CourseClassStatus {
@@ -27,8 +28,10 @@ enum CourseClassStatus {
 
 type Query {
   profile: User
-  courseClassList: [CourseClass]!
   courseClass(id: ID!): CourseClass
+  lecturerCourseClasses: [CourseClass]
+  studentCourseClasses: [CourseClass]
+  openCourseClasses: [CourseClass]
 }
 
 type Mutation {

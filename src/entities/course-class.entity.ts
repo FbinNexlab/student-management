@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { CourseClassStatus } from "../generated/graphql";
 import { User } from "./user.entity";
 
@@ -7,24 +7,27 @@ export class CourseClass {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: "class_name" })
+  @Column()
   className: string;
 
-  @Column({ name: "course_name" })
+  @Column()
   courseName: string;
 
-  @Column({ name: "number_of_student" })
+  @Column()
   numberOfStudent: number;
 
-  @Column({ name: "status" })
+  @Column()
   status: CourseClassStatus;
 
   @ManyToOne(() => User, (user) => user.monitorCourseClasses)
-  @JoinColumn({ name: "id_class_monitor" })
+  @JoinColumn()
   classMonitor: User;
 
   @ManyToOne(() => User, (user) => user.lecturerCourseClasses)
-  @JoinColumn({ name: "id_lecturer" })
+  @JoinColumn()
   lecturer: User;
+
+  @ManyToMany (() => User, (user) => user.studentCourseClasses)
+  @JoinTable()
+  students: User[];
 }
-  

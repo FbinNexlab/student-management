@@ -6,6 +6,17 @@ export class CourseClassesRepo {
     return AppDataSource.manager.findOneBy(CourseClass, { id: classId });
   }
 
+  async getLecturerClasses(lecturerId: number) {
+    return AppDataSource.manager.find(CourseClass, {
+      where: { lecturer: { id: lecturerId } },
+      relations: {
+        classMonitor: true,
+        students: true,
+        lecturer: true,
+      },
+    });
+  }
+
   async saveClass(courseClass: CourseClass) {
     return AppDataSource.manager.save(courseClass);
   }

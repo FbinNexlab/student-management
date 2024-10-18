@@ -18,13 +18,14 @@ export type Scalars = {
 
 export type CourseClass = {
   __typename?: 'CourseClass';
+  classMonitor: User;
   className: Scalars['String']['output'];
   courseName: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  idClassMonitor: Scalars['ID']['output'];
-  idLecturer: Scalars['ID']['output'];
+  lecturer: User;
   numberOfStudent: Scalars['Int']['output'];
   status: CourseClassStatus;
+  students: Array<Maybe<User>>;
 };
 
 export enum CourseClassStatus {
@@ -90,8 +91,10 @@ export type MutationUpdateCourseClassArgs = {
 export type Query = {
   __typename?: 'Query';
   courseClass?: Maybe<CourseClass>;
-  courseClassList: Array<Maybe<CourseClass>>;
+  lecturerCourseClasses?: Maybe<Array<Maybe<CourseClass>>>;
+  openCourseClasses?: Maybe<Array<Maybe<CourseClass>>>;
   profile?: Maybe<User>;
+  studentCourseClasses?: Maybe<Array<Maybe<CourseClass>>>;
 };
 
 
@@ -245,13 +248,14 @@ export type ResolversParentTypes = {
 };
 
 export type CourseClassResolvers<ContextType = any, ParentType extends ResolversParentTypes['CourseClass'] = ResolversParentTypes['CourseClass']> = {
+  classMonitor?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   className?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   courseName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  idClassMonitor?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  idLecturer?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  lecturer?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   numberOfStudent?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   status?: Resolver<ResolversTypes['CourseClassStatus'], ParentType, ContextType>;
+  students?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -273,8 +277,10 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   courseClass?: Resolver<Maybe<ResolversTypes['CourseClass']>, ParentType, ContextType, RequireFields<QueryCourseClassArgs, 'id'>>;
-  courseClassList?: Resolver<Array<Maybe<ResolversTypes['CourseClass']>>, ParentType, ContextType>;
+  lecturerCourseClasses?: Resolver<Maybe<Array<Maybe<ResolversTypes['CourseClass']>>>, ParentType, ContextType>;
+  openCourseClasses?: Resolver<Maybe<Array<Maybe<ResolversTypes['CourseClass']>>>, ParentType, ContextType>;
   profile?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  studentCourseClasses?: Resolver<Maybe<Array<Maybe<ResolversTypes['CourseClass']>>>, ParentType, ContextType>;
 };
 
 export type ResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['Response'] = ResolversParentTypes['Response']> = {

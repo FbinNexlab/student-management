@@ -104,7 +104,7 @@ const mutations: MutationResolvers = {
       .required("Monitor's email is required")
       .email("Monitor's email is invalid.")
       .validate(createCourseClassInput.emailClassMonitor);
-
+      
     await courseClassesService.createNewClass(createCourseClassInput, user.email);
 
     return {

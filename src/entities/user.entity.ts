@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { UserRole } from "../generated/graphql";
 import { CourseClass } from "./course-class.entity";
 
@@ -24,4 +24,7 @@ export class User {
 
   @OneToMany(() => CourseClass, (courseClass) => courseClass.classMonitor)
   monitorCourseClasses: CourseClass[];
+
+  @ManyToMany(() => CourseClass, (courseClass) => courseClass.students)
+  studentCourseClasses: CourseClass[];
 }

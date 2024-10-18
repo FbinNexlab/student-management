@@ -1,10 +1,9 @@
 import { compare, hash } from "bcrypt";
 import { User } from "../entities/user.entity";
-import { User as UserDto, UserRole } from "../generated/graphql";
-import { UsersMapper } from "../mappers/users.mapper";
+import { UserNotFoundError } from "../errors/common.error";
+import { UserRole } from "../generated/graphql";
 import { UsersRepo } from "../repos/users.repo";
 import { JwtPayload, JwtService } from "./jwt.service";
-import { UserNotFoundError } from "../errors/common.error";
 
 export class UsersService {
   constructor(private usersRepo: UsersRepo, private jwtService: JwtService) {}
@@ -52,13 +51,14 @@ export class UsersService {
     this.jwtService.invalidateToken(jti);
   }
 
-  async getProfile(email: string): Promise<UserDto> {
+  async getProfile(email: string): Promise<User> {
     const user: User = await this.usersRepo.getUserByEmail(email);
+    console.log("user debug", user);
     if (!user) {
       throw UserNotFoundError;
     }
 
-    return UsersMapper.toUserDto(user);
+    return user;
   }
 
   async updateProfile(email: string, fullName: string, oldPassword: string, newPassword: string) {

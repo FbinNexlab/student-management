@@ -1,4 +1,5 @@
 import { AppContext } from "..";
+import { PermissionError, UnauthorizedError } from "../errors/auth.error";
 import { QueryResolvers } from "../generated/graphql";
 const queries: QueryResolvers = {
   profile: async (_, {}, { user, usersService }: AppContext) => {
@@ -6,7 +7,15 @@ const queries: QueryResolvers = {
       throw new Error("User unauthorized");
     }
 
-    return usersService.getProfile(user.email);
+    return await usersService.getProfile(user.email);
+  },
+
+  lecturerCourseClasses: async (_, {}, { user, courseClassesService }: AppContext) => {
+    if (!user) throw UnauthorizedError;
+
+    if (user.role !== "LECTURER") throw PermissionError;
+
+    return await courseClassesService.getLecturerClasses(user.userId);
   },
 };
 

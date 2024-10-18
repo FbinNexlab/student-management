@@ -9,10 +9,6 @@ import { CreateCourseClassInput } from "./../generated/graphql";
 export class CourseClassesService {
   constructor(private courseClassesRepo: CourseClassesRepo, private usersRepo: UsersRepo) {}
 
-  async getClassListOfStudent(classId: number) {}
-
-  async getClassListOfLecturer(lecturerId: number) {}
-
   async createNewClass(createCourseClassInput: CreateCourseClassInput, lecturerEmail: string) {
     // Check if the class monitor exists
     const classMonitor = await this.usersRepo.getUserByEmail(createCourseClassInput.emailClassMonitor);
@@ -86,5 +82,9 @@ export class CourseClassesService {
     }
 
     await this.courseClassesRepo.deleteClass(classId);
+  }
+
+  async getLecturerClasses(lecturerId: number) {
+    return this.courseClassesRepo.getLecturerClasses(lecturerId);
   }
 }
