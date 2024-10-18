@@ -1,6 +1,6 @@
 services:
   postgresdb:
-    image: postgres:12
+    image: postgres
     container_name: postgresdb
     environment:
       POSTGRES_USER: postgres
@@ -18,8 +18,13 @@ services:
     volumes:
       - ./src:/home/node/app/src
     container_name: student-management
+    environment:
+      DB_HOST: postgresdb
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: 1234
     ports:
       - "4000:4000"
-    command: npm run dev
+    command: npm run start
     depends_on:
       - postgresdb
