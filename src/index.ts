@@ -1,5 +1,6 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
+import Dotenv from "dotenv";
 import { readFileSync } from "fs";
 import { IncomingMessage } from "http";
 import { Redis } from "ioredis";
@@ -10,7 +11,7 @@ import { CourseClassesService } from "./services/course-classes.service.js";
 import { JwtPayload, JwtService } from "./services/jwt.service.js";
 import { UsersService } from "./services/users.service.js";
 
-require("dotenv").config();
+Dotenv.config();
 
 const typeDefs = readFileSync("src/schema.graphql", { encoding: "utf-8" });
 

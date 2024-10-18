@@ -1,6 +1,6 @@
 import { Redis } from "ioredis";
-import * as Jwt from "jsonwebtoken";
-import { v4 as uuidv4 } from "uuid";
+import Jwt from "jsonwebtoken";
+import { v4 as uuidv4 } from "uuid";  
 
 export interface JwtPayload extends Jwt.JwtPayload {
   userId: number;
