@@ -109,4 +109,8 @@ export class CourseClassesService {
 
     return courseClass;
   }
+
+  async getOpenClasses() {
+    return await this.courseClassesRepo.getOpenClasses();
+  }
 }

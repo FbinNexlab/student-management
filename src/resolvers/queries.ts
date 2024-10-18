@@ -30,7 +30,13 @@ const queries: QueryResolvers = {
     if (!user) throw UnauthorizedError;
 
     return await courseClassesService.getClassDetails(id);
-  }
+  },
+
+  openCourseClasses: async (_, {}, { user, courseClassesService }: AppContext) => {
+    if (!user) throw UnauthorizedError;
+
+    return await courseClassesService.getOpenClasses();
+  },
 };
 
 export default queries;
