@@ -28,6 +28,11 @@ export type CourseClass = {
   students: Array<Maybe<User>>;
 };
 
+export type CourseClassFilter = {
+  classMonitorName?: InputMaybe<Scalars['String']['input']>;
+  className?: InputMaybe<Scalars['String']['input']>;
+};
+
 export enum CourseClassStatus {
   Close = 'CLOSE',
   Open = 'OPEN'
@@ -100,6 +105,11 @@ export type Query = {
 
 export type QueryCourseClassArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type QueryLecturerCourseClassesArgs = {
+  filter?: InputMaybe<CourseClassFilter>;
 };
 
 export type Response = {
@@ -213,6 +223,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   CourseClass: ResolverTypeWrapper<CourseClass>;
+  CourseClassFilter: CourseClassFilter;
   CourseClassStatus: CourseClassStatus;
   CreateCourseClassInput: CreateCourseClassInput;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
@@ -233,6 +244,7 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
   CourseClass: CourseClass;
+  CourseClassFilter: CourseClassFilter;
   CreateCourseClassInput: CreateCourseClassInput;
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
@@ -277,7 +289,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   courseClass?: Resolver<Maybe<ResolversTypes['CourseClass']>, ParentType, ContextType, RequireFields<QueryCourseClassArgs, 'id'>>;
-  lecturerCourseClasses?: Resolver<Maybe<Array<Maybe<ResolversTypes['CourseClass']>>>, ParentType, ContextType>;
+  lecturerCourseClasses?: Resolver<Maybe<Array<Maybe<ResolversTypes['CourseClass']>>>, ParentType, ContextType, Partial<QueryLecturerCourseClassesArgs>>;
   openCourseClasses?: Resolver<Maybe<Array<Maybe<ResolversTypes['CourseClass']>>>, ParentType, ContextType>;
   profile?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   studentCourseClasses?: Resolver<Maybe<Array<Maybe<ResolversTypes['CourseClass']>>>, ParentType, ContextType>;

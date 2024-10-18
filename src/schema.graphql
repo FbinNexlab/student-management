@@ -29,7 +29,7 @@ enum CourseClassStatus {
 type Query {
   profile: User
   courseClass(id: ID!): CourseClass
-  lecturerCourseClasses: [CourseClass]
+  lecturerCourseClasses(filter: CourseClassFilter): [CourseClass]
   studentCourseClasses: [CourseClass]
   openCourseClasses: [CourseClass]
 }
@@ -78,4 +78,9 @@ input UpdateCourseClassInput {
   courseName: String
   emailClassMonitor: String
   status: CourseClassStatus
+}
+
+input CourseClassFilter {
+  className: String
+  classMonitorName: String
 }

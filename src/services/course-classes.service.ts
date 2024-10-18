@@ -1,7 +1,7 @@
 import { CourseClass } from "../entities/course-class.entity";
 import { PermissionError } from "../errors/auth.error";
 import { CourseClassNotFoundError, UserNotFoundError } from "../errors/common.error";
-import { CourseClassStatus, UpdateCourseClassInput, UserRole } from "../generated/graphql";
+import { CourseClassFilter, CourseClassStatus, UpdateCourseClassInput, UserRole } from "../generated/graphql";
 import { CourseClassesRepo } from "../repos/course-classes.repo";
 import { UsersRepo } from "../repos/users.repo";
 import { CreateCourseClassInput } from "./../generated/graphql";
@@ -84,7 +84,20 @@ export class CourseClassesService {
     await this.courseClassesRepo.deleteClass(classId);
   }
 
-  async getLecturerClasses(lecturerId: number) {
-    return this.courseClassesRepo.getLecturerClasses(lecturerId);
+  async getLecturerClasses(lecturerId: number, filter: CourseClassFilter) {
+    console.log("filter", filter);
+    let courseClasses = await this.courseClassesRepo.getLecturerClasses(lecturerId);
+    if (filter && filter.classMonitorName) {
+      courseClasses = courseClasses.filter((courseClass) => courseClass.classMonitor.fullName === filter.classMonitorName);
+    }
+
+    if (filter && filter.className) {
+      console.log("filter.className", filter.className);
+      courseClasses = courseClasses.filter((courseClass) => courseClass.className === filter.className);
+    }
+
+    console.log("courseClasses", courseClasses);
+
+    return courseClasses;
   }
 }
