@@ -1,5 +1,6 @@
 import { AppDataSource } from "../data-source";
 import { CourseClass } from "../entities/course-class.entity";
+import { User } from "../entities/user.entity";
 import { CourseClassStatus } from "../generated/graphql";
 
 export class CourseClassesRepo {
@@ -23,6 +24,15 @@ export class CourseClassesRepo {
         lecturer: true,
       },
     });
+  }
+
+  async getStudentClasses(studentId: number) {
+    const user = await AppDataSource.getRepository(User).findOne({
+      where: { id: studentId },
+      relations: { studentCourseClasses: true },
+    });
+
+    return user.studentCourseClasses;
   }
 
   async getOpenClasses() {

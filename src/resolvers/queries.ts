@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import { AppContext } from "..";
 import { PermissionError, UnauthorizedError } from "../errors/auth.error";
-import { QueryResolvers } from "../generated/graphql";
+import { QueryResolvers, UserRole } from "../generated/graphql";
 
 const queries: QueryResolvers = {
   profile: async (_, {}, { user, usersService }: AppContext) => {
@@ -15,7 +15,7 @@ const queries: QueryResolvers = {
   lecturerCourseClasses: async (_, { filter }, { user, courseClassesService }: AppContext) => {
     if (!user) throw UnauthorizedError;
 
-    if (user.role !== "LECTURER") throw PermissionError;
+    if (user.role !== UserRole.Lecturer) throw PermissionError;
 
     // Validate filter
     if (filter) {
@@ -25,17 +25,25 @@ const queries: QueryResolvers = {
 
     return await courseClassesService.getLecturerClasses(user.userId, filter);
   },
-
-  courseClass: async (_, { id }, { user, courseClassesService }: AppContext) => {
-    if (!user) throw UnauthorizedError;
-
-    return await courseClassesService.getClassDetails(id);
-  },
-
+  
   openCourseClasses: async (_, {}, { user, courseClassesService }: AppContext) => {
     if (!user) throw UnauthorizedError;
 
     return await courseClassesService.getOpenClasses();
+  },
+
+  studentCourseClasses: async (_, { filter }, { user, courseClassesService }: AppContext) => {
+    if (!user) throw UnauthorizedError;
+
+    if (user.role !== UserRole.Student) throw PermissionError;
+
+    // Validate filter
+    if (filter) {
+      yup.string().max(255, "Class monitor's name is too long").validate(filter.classMonitorName);
+      yup.string().max(255, "Class name is too long").validate(filter.className);
+    }
+
+    return await courseClassesService.getStudentClasses(user.userId, filter);
   },
 };
 

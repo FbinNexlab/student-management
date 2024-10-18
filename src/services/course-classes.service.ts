@@ -103,15 +103,15 @@ export class CourseClassesService {
     return courseClasses;
   }
 
-  async getClassDetails(classId: number) {
-    const courseClass = await this.courseClassesRepo.getClassById(classId);
-    if (!courseClass) {
-      throw CourseClassNotFoundError;
+  async getStudentClasses(studentId: number, filter: CourseClassFilter) {
+    let courseClasses = await this.courseClassesRepo.getStudentClasses(studentId);
+    if (filter && filter.className) {
+      courseClasses = courseClasses.filter((courseClass) => courseClass.className === filter.className);
     }
 
-    return courseClass;
+    return courseClasses
   }
-
+  
   async getOpenClasses() {
     return await this.courseClassesRepo.getOpenClasses();
   }

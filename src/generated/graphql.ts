@@ -107,7 +107,6 @@ export type MutationUpdateCourseClassArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  courseClass?: Maybe<CourseClass>;
   lecturerCourseClasses?: Maybe<Array<Maybe<CourseClass>>>;
   openCourseClasses?: Maybe<Array<Maybe<CourseClass>>>;
   profile?: Maybe<User>;
@@ -115,12 +114,12 @@ export type Query = {
 };
 
 
-export type QueryCourseClassArgs = {
-  id: Scalars['ID']['input'];
+export type QueryLecturerCourseClassesArgs = {
+  filter?: InputMaybe<CourseClassFilter>;
 };
 
 
-export type QueryLecturerCourseClassesArgs = {
+export type QueryStudentCourseClassesArgs = {
   filter?: InputMaybe<CourseClassFilter>;
 };
 
@@ -302,11 +301,10 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  courseClass?: Resolver<Maybe<ResolversTypes['CourseClass']>, ParentType, ContextType, RequireFields<QueryCourseClassArgs, 'id'>>;
   lecturerCourseClasses?: Resolver<Maybe<Array<Maybe<ResolversTypes['CourseClass']>>>, ParentType, ContextType, Partial<QueryLecturerCourseClassesArgs>>;
   openCourseClasses?: Resolver<Maybe<Array<Maybe<ResolversTypes['CourseClass']>>>, ParentType, ContextType>;
   profile?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  studentCourseClasses?: Resolver<Maybe<Array<Maybe<ResolversTypes['CourseClass']>>>, ParentType, ContextType>;
+  studentCourseClasses?: Resolver<Maybe<Array<Maybe<ResolversTypes['CourseClass']>>>, ParentType, ContextType, Partial<QueryStudentCourseClassesArgs>>;
 };
 
 export type ResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['Response'] = ResolversParentTypes['Response']> = {

@@ -28,9 +28,8 @@ enum CourseClassStatus {
 
 type Query {
   profile: User
-  courseClass(id: ID!): CourseClass
   lecturerCourseClasses(filter: CourseClassFilter): [CourseClass]
-  studentCourseClasses: [CourseClass]
+  studentCourseClasses(filter: CourseClassFilter): [CourseClass]
   openCourseClasses: [CourseClass]
 }
 
