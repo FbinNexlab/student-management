@@ -27,7 +27,7 @@ export class CourseClass {
   @JoinColumn()
   lecturer: User;
 
-  @ManyToMany (() => User, (user) => user.studentCourseClasses)
+  @ManyToMany (() => User, (user) => user.studentCourseClasses, { cascade: true })
   @JoinTable()
   students: User[];
 }

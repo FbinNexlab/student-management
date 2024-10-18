@@ -113,4 +113,22 @@ export class CourseClassesService {
   async getOpenClasses() {
     return await this.courseClassesRepo.getOpenClasses();
   }
+
+  async joinOpenClass(classId: number, studentEmail: string) {
+    const courseClass = await this.courseClassesRepo.getClassById(classId);
+    if (!courseClass || courseClass.status === CourseClassStatus.Close) {
+      throw CourseClassNotFoundError;
+    }
+
+    // Check if the student exists
+    const student = await this.usersRepo.getUserByEmail(studentEmail);
+    if (!student) {
+      throw UserNotFoundError;
+    }
+
+    courseClass.numberOfStudent += 1;
+    courseClass.students.push(student);
+
+    await this.courseClassesRepo.saveClass(courseClass);
+  }
 }

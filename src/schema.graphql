@@ -43,6 +43,7 @@ type Mutation {
   createCourseClass(createCourseClassInput: CreateCourseClassInput!): Response
   deleteCourseClass(id: ID!): Response
   updateCourseClass(id: ID!, updateCourseClassInput: UpdateCourseClassInput!): Response
+  joinOpenCourseClass(id: ID!): Response
 }
 
 type Response {

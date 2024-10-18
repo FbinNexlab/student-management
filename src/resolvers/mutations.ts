@@ -104,7 +104,7 @@ const mutations: MutationResolvers = {
       .required("Monitor's email is required")
       .email("Monitor's email is invalid.")
       .validate(createCourseClassInput.emailClassMonitor);
-      
+
     await courseClassesService.createNewClass(createCourseClassInput, user.email);
 
     return {
@@ -147,6 +147,22 @@ const mutations: MutationResolvers = {
 
     return {
       message: "Course class deleted successfully",
+    };
+  },
+
+  joinOpenCourseClass: async (_, { id }, { user, courseClassesService }: AppContext) => {
+    if (!user) {
+      throw UnauthorizedError;
+    }
+
+    if (user.role !== UserRole.Student) {
+      throw PermissionError;
+    }
+
+    await courseClassesService.joinOpenClass(id, user.email);
+
+    return {
+      message: "Joined class successfully",
     };
   },
 };
