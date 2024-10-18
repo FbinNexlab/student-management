@@ -1,0 +1,25 @@
+services:
+  postgresdb:
+    image: postgres:12
+    container_name: postgresdb
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: student_management
+    ports:
+      - "5432:5432"
+    volumes:
+      - ~/data:/var/lib/postgresql/data
+  student-management:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    volumes:
+      - ./src:/home/node/app/src
+    container_name: student-management
+    ports:
+      - "4000:4000"
+    command: npm run dev
+    depends_on:
+      - postgresdb

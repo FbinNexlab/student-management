@@ -1,7 +1,7 @@
-import { AppDataSource } from "../data-source";
-import { CourseClass } from "../entities/course-class.entity";
-import { User } from "../entities/user.entity";
-import { CourseClassStatus } from "../generated/graphql";
+import { AppDataSource } from "../data-source.js";
+import { CourseClass } from "../entities/course-class.entity.js";
+import { User } from "../entities/user.entity.js";
+import { CourseClassStatus } from "../generated/graphql.js";
 
 export class CourseClassesRepo {
   async getClassById(classId: number) {
