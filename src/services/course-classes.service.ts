@@ -1,10 +1,10 @@
-import { CourseClass } from "../entities/course-class.entity";
-import { PermissionError } from "../errors/auth.error";
-import { CourseClassNotFoundError, UserNotFoundError } from "../errors/common.error";
-import { CourseClassFilter, CourseClassStatus, UpdateCourseClassInput, UserRole } from "../generated/graphql";
-import { CourseClassesRepo } from "../repos/course-classes.repo";
-import { UsersRepo } from "../repos/users.repo";
-import { CreateCourseClassInput } from "./../generated/graphql";
+import { CourseClass } from "../entities/course-class.entity.js";
+import { PermissionError } from "../errors/auth.error.js";
+import { CourseClassNotFoundError, UserNotFoundError } from "../errors/common.error.js";
+import { CourseClassFilter, CourseClassStatus, UpdateCourseClassInput, UserRole } from "../generated/graphql.js";
+import { CourseClassesRepo } from "../repos/course-classes.repo.js";
+import { UsersRepo } from "../repos/users.repo.js";
+import { CreateCourseClassInput } from "./../generated/graphql.js";
 
 export class CourseClassesService {
   constructor(private courseClassesRepo: CourseClassesRepo, private usersRepo: UsersRepo) {}

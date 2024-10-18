@@ -1,4 +1,4 @@
-import Redis from "ioredis";
+import { Redis } from "ioredis";
 import * as Jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 

@@ -1,7 +1,7 @@
 import * as yup from "yup";
-import { AppContext } from "..";
-import { PermissionError, UnauthorizedError } from "../errors/auth.error";
-import { CourseClassStatus, MutationResolvers, UserRole } from "../generated/graphql";
+import { AppContext } from "../index.js";
+import { PermissionError, UnauthorizedError } from "../errors/auth.error.js";
+import { CourseClassStatus, MutationResolvers, UserRole } from "../generated/graphql.js";
 
 const mutations: MutationResolvers = {
   signUp: async (_, { userInput }, { usersService }: AppContext) => {

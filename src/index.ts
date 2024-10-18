@@ -2,13 +2,13 @@ import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { readFileSync } from "fs";
 import { IncomingMessage } from "http";
-import Redis from "ioredis";
-import { UsersRepo } from "./repos/users.repo";
-import resolvers from "./resolvers/resolvers";
-import { JwtPayload, JwtService } from "./services/jwt.service";
-import { UsersService } from "./services/users.service";
-import { CourseClassesService } from "./services/course-classes.service";
-import { CourseClassesRepo } from "./repos/course-classes.repo";
+import { Redis } from "ioredis";
+import { CourseClassesRepo } from "./repos/course-classes.repo.js";
+import { UsersRepo } from "./repos/users.repo.js";
+import resolvers from "./resolvers/resolvers.js";
+import { CourseClassesService } from "./services/course-classes.service.js";
+import { JwtPayload, JwtService } from "./services/jwt.service.js";
+import { UsersService } from "./services/users.service.js";
 
 require("dotenv").config();
 
@@ -72,7 +72,7 @@ async function startServer() {
       return {
         user,
         usersService,
-        courseClassesService
+        courseClassesService,
       };
     },
   });

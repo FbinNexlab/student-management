@@ -1,5 +1,5 @@
-import { AppDataSource } from "../data-source";
-import { User } from "../entities/user.entity";
+import { AppDataSource } from "../data-source.js";
+import { User } from "../entities/user.entity.js";
 
 export class UsersRepo {
   async getUserByEmail(email: string): Promise<User | null> {

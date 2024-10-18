@@ -1,7 +1,7 @@
 import * as yup from "yup";
-import { AppContext } from "..";
-import { PermissionError, UnauthorizedError } from "../errors/auth.error";
-import { QueryResolvers, UserRole } from "../generated/graphql";
+import { AppContext } from "../index.js";
+import { PermissionError, UnauthorizedError } from "../errors/auth.error.js";
+import { QueryResolvers, UserRole } from "../generated/graphql.js";
 
 const queries: QueryResolvers = {
   profile: async (_, {}, { user, usersService }: AppContext) => {

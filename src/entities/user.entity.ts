@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { UserRole } from "../generated/graphql";
-import { CourseClass } from "./course-class.entity";
+import { UserRole } from "../generated/graphql.js";
+import { CourseClass } from "./course-class.entity.js";
 
 @Entity()
 export class User {

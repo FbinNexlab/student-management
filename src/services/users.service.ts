@@ -1,9 +1,9 @@
 import { compare, hash } from "bcrypt";
-import { User } from "../entities/user.entity";
-import { UserNotFoundError } from "../errors/common.error";
-import { UserRole } from "../generated/graphql";
-import { UsersRepo } from "../repos/users.repo";
-import { JwtPayload, JwtService } from "./jwt.service";
+import { User } from "../entities/user.entity.js";
+import { UserNotFoundError } from "../errors/common.error.js";
+import { UserRole } from "../generated/graphql.js";
+import { UsersRepo } from "../repos/users.repo.js";
+import { JwtPayload, JwtService } from "./jwt.service.js";
 
 export class UsersService {
   constructor(private usersRepo: UsersRepo, private jwtService: JwtService) {}
