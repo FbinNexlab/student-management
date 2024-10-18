@@ -56,6 +56,7 @@ export type Mutation = {
   deleteCourseClass?: Maybe<Response>;
   editProfile?: Maybe<Response>;
   joinOpenCourseClass?: Maybe<Response>;
+  leaveCourseClass?: Maybe<Response>;
   login?: Maybe<LoginResponse>;
   logout?: Maybe<Response>;
   signUp?: Maybe<Response>;
@@ -79,6 +80,11 @@ export type MutationEditProfileArgs = {
 
 
 export type MutationJoinOpenCourseClassArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationLeaveCourseClassArgs = {
   id: Scalars['ID']['input'];
 };
 
@@ -288,6 +294,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteCourseClass?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<MutationDeleteCourseClassArgs, 'id'>>;
   editProfile?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<MutationEditProfileArgs, 'userUpdateInput'>>;
   joinOpenCourseClass?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<MutationJoinOpenCourseClassArgs, 'id'>>;
+  leaveCourseClass?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<MutationLeaveCourseClassArgs, 'id'>>;
   login?: Resolver<Maybe<ResolversTypes['LoginResponse']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
   logout?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType>;
   signUp?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<MutationSignUpArgs, 'userInput'>>;

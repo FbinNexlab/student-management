@@ -88,7 +88,9 @@ export class CourseClassesService {
     console.log("filter", filter);
     let courseClasses = await this.courseClassesRepo.getLecturerClasses(lecturerId);
     if (filter && filter.classMonitorName) {
-      courseClasses = courseClasses.filter((courseClass) => courseClass.classMonitor.fullName === filter.classMonitorName);
+      courseClasses = courseClasses.filter(
+        (courseClass) => courseClass.classMonitor.fullName === filter.classMonitorName
+      );
     }
 
     if (filter && filter.className) {
@@ -126,8 +128,36 @@ export class CourseClassesService {
       throw UserNotFoundError;
     }
 
+    // Check if the student is already in the class
+    if(courseClass.students.find((student) => student.email === studentEmail)) {
+      throw new Error("Student already in this class");
+    }
+
     courseClass.numberOfStudent += 1;
     courseClass.students.push(student);
+
+    await this.courseClassesRepo.saveClass(courseClass);
+  }
+
+  async leaveClass(classId: number, studentEmail: string) {
+    const courseClass = await this.courseClassesRepo.getClassById(classId);
+    if (!courseClass) {
+      throw CourseClassNotFoundError;
+    }
+
+    let found = false;
+    for (const index in courseClass.students) {
+      if (courseClass.students[index].email === studentEmail) {
+        courseClass.numberOfStudent -= 1;
+        courseClass.students.splice(parseInt(index), 1);
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      throw new Error("Student not found in this class");
+    }
 
     await this.courseClassesRepo.saveClass(courseClass);
   }

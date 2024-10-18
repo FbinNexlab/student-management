@@ -125,7 +125,10 @@ const mutations: MutationResolvers = {
     await yup.string().max(255, "Class name is too long.").validate(updateCourseClassInput.className);
     await yup.string().max(255, "Course name is too long.").validate(updateCourseClassInput.courseName);
     await yup.string().email("Monitor's email is invalid.").validate(updateCourseClassInput.emailClassMonitor);
-    await yup.string().oneOf(Object.values(CourseClassStatus), "Status is invalid.").validate(updateCourseClassInput.status);
+    await yup
+      .string()
+      .oneOf(Object.values(CourseClassStatus), "Status is invalid.")
+      .validate(updateCourseClassInput.status);
 
     await courseClassesService.updateClass(id, updateCourseClassInput, user.userId);
 
@@ -163,6 +166,22 @@ const mutations: MutationResolvers = {
 
     return {
       message: "Joined class successfully",
+    };
+  },
+
+  leaveCourseClass: async (_, { id }, { user, courseClassesService }: AppContext) => {
+    if (!user) {
+      throw UnauthorizedError;
+    }
+
+    if (user.role !== UserRole.Student) {
+      throw PermissionError;
+    }
+
+    await courseClassesService.leaveClass(id, user.email);
+
+    return {
+      message: "Left class successfully",
     };
   },
 };
