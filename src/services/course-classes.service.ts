@@ -100,4 +100,13 @@ export class CourseClassesService {
 
     return courseClasses;
   }
+
+  async getClassDetails(classId: number) {
+    const courseClass = await this.courseClassesRepo.getClassById(classId);
+    if (!courseClass) {
+      throw CourseClassNotFoundError;
+    }
+
+    return courseClass;
+  }
 }

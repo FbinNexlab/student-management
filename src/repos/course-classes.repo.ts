@@ -3,7 +3,14 @@ import { CourseClass } from "../entities/course-class.entity";
 
 export class CourseClassesRepo {
   async getClassById(classId: number) {
-    return AppDataSource.manager.findOneBy(CourseClass, { id: classId });
+    return AppDataSource.manager.findOne(CourseClass, {
+      where: { id: classId },
+      relations: {
+        classMonitor: true,
+        students: true,
+        lecturer: true,
+      },
+    });
   }
 
   async getLecturerClasses(lecturerId: number) {
