@@ -1,0 +1,4 @@
+- "!include public_course_class.yaml"
+- "!include public_course_class_students.yaml"
+- "!include public_test_migration.yaml"
+- "!include public_user.yaml"

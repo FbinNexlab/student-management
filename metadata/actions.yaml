@@ -1,0 +1,11 @@
+actions:
+  - name: deleteCourseClass
+    definition:
+      kind: synchronous
+      handler: https://localhost:3000/delete-course-class
+custom_types:
+  enums: []
+  input_objects: []
+  objects:
+    - name: DeleteCourseClassOutput
+  scalars: []

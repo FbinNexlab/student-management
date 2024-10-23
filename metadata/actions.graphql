@@ -1,0 +1,12 @@
+type Mutation {
+  deleteCourseClass(
+    id: Int
+  ): DeleteCourseClassOutput
+}
+
+type DeleteCourseClassOutput {
+  class_name: String!
+  course_name: String!
+  id: Int!
+}
+
