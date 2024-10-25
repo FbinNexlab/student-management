@@ -1,12 +1,40 @@
 type Mutation {
-  deleteCourseClass(
-    id: Int
-  ): DeleteCourseClassOutput
+  login(
+    email: String!
+    password: String!
+  ): LoginResponse
+}
+
+type Mutation {
+  signUp(
+    userInput: UserInput!
+  ): Response
+}
+
+enum UserRole {
+  STUDENT
+  LECTURER
+}
+
+input UserInput {
+  fullName: String
+  password: String
+  email: String
+  role: UserRole
 }
 
 type DeleteCourseClassOutput {
   class_name: String!
   course_name: String!
   id: Int!
+}
+
+type Response {
+  message: String!
+}
+
+type LoginResponse {
+  message: String!
+  token: String
 }
 

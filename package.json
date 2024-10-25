@@ -9,6 +9,7 @@
     "prod": "node dist/src/index.js",
     "dev": "nodemon src/index.ts",
     "start": "node --loader ts-node/esm src/index.ts",
+    "webhook": "node --loader ts-node/esm src/webhooks.ts",
     "codegen": "graphql-codegen --config codegen.ts",
     "typeorm": "typeorm-ts-node-esm"
   },

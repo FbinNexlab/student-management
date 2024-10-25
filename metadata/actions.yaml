@@ -1,11 +1,32 @@
 actions:
-  - name: deleteCourseClass
+  - name: login
     definition:
       kind: synchronous
-      handler: https://localhost:3000/delete-course-class
+      handler: http://host.docker.internal:3000/login
+    permissions:
+      - role: guest
+    comment: Login user with email and password
+  - name: signUp
+    definition:
+      kind: synchronous
+      handler: http://host.docker.internal:3000/signup
+    permissions:
+      - role: guest
+    comment: Login a user with email and password
 custom_types:
-  enums: []
-  input_objects: []
+  enums:
+    - name: UserRole
+      values:
+        - description: null
+          is_deprecated: null
+          value: STUDENT
+        - description: null
+          is_deprecated: null
+          value: LECTURER
+  input_objects:
+    - name: UserInput
   objects:
     - name: DeleteCourseClassOutput
+    - name: Response
+    - name: LoginResponse
   scalars: []

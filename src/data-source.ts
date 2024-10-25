@@ -1,8 +1,7 @@
-import { configDotenv } from "dotenv";
+import Dotenv from "dotenv";
 import { DataSource } from "typeorm";
 import { CourseClass } from "./entities/course-class.entity.js";
 import { User } from "./entities/user.entity.js";
-import Dotenv from "dotenv";
 
 Dotenv.config();
 
@@ -13,7 +12,7 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USERNAME || "postgres",
   password: process.env.DB_PASSWORD || "postgres",
   database: process.env.DB_NAME || "postgres",
-  synchronize: true,
+  synchronize: false,
   logging: true,
   entities: [User, CourseClass],
   subscribers: [],
