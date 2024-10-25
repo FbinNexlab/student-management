@@ -83,6 +83,21 @@ app.post("/login", async (request, response) => {
   }
 });
 
+app.post("/after-insert-user", async (request, response) => {
+  console.log("after-insert-user", request.body);
+  response.status(200).json({ message: "Event triggers after insert a new user" });
+});
+
+app.post("/run-every-minute", async (request, response) => {
+  console.log("run-every-minute", request.body);
+  response.status(200).json({ message: "Event triggers every minute" });
+});
+
+app.post("/run-once-at-scheduled-time", async (request, response) => {
+  console.log("run-once-at-scheduled-time", request.body);
+  response.status(200).json({ message: "Event triggers once at a scheduled time" });
+});
+
 app.listen(port, function () {
   console.log("Your app is listening on port " + port);
 });

@@ -1,1 +1,7 @@
-[]
+- name: run_every_minute
+  webhook: http://host.docker.internal:3000/run-every-minute
+  schedule: '* * * * *'
+  include_in_metadata: true
+  payload:
+    hello: cron triggers
+  comment: A simple cron job run every minute
