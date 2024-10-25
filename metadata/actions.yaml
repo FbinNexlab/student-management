@@ -1,17 +1,13 @@
 actions:
-  - name: login
+  - name: login_action
     definition:
       kind: synchronous
       handler: http://host.docker.internal:3000/login
-    permissions:
-      - role: guest
     comment: Login user with email and password
-  - name: signUp
+  - name: signUp_action
     definition:
       kind: synchronous
       handler: http://host.docker.internal:3000/signup
-    permissions:
-      - role: guest
     comment: Login a user with email and password
 custom_types:
   enums:

@@ -1,12 +1,12 @@
 type Mutation {
-  login(
+  login_action(
     email: String!
     password: String!
   ): LoginResponse
 }
 
 type Mutation {
-  signUp(
+  signUp_action(
     userInput: UserInput!
   ): Response
 }

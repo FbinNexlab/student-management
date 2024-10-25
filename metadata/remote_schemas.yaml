@@ -1,1 +1,6 @@
-[]
+- name: student-manage-apollo-server
+  definition:
+    url: http://host.docker.internal:4000
+    timeout_seconds: 60
+    customization: {}
+  comment: A simple standalone graphql server with express and apollo server
