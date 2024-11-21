@@ -2,38 +2,43 @@ table:
   name: user
   schema: public
 array_relationships:
-  - name: lecturer_classes
-    using:
-      foreign_key_constraint_on:
-        column: lecturer_id
-        table:
-          name: course_class
-          schema: public
-  - name: monitor_classes
-    using:
-      foreign_key_constraint_on:
-        column: class_monitor_id
-        table:
-          name: course_class
-          schema: public
+- name: lecturer_classes
+  using:
+    foreign_key_constraint_on:
+      column: lecturer_id
+      table:
+        name: course_class
+        schema: public
+- name: monitor_classes
+  using:
+    foreign_key_constraint_on:
+      column: class_monitor_id
+      table:
+        name: course_class
+        schema: public
 select_permissions:
-  - role: student
-    permission:
-      columns:
-        - email
-        - full_name
-        - id
-        - role
-      filter: {}
-    comment: ""
+- comment: ""
+  permission:
+    columns: []
+    filter: {}
+  role: lecturer
+- comment: ""
+  permission:
+    columns:
+    - email
+    - full_name
+    - id
+    - role
+    filter: {}
+  role: student
 event_triggers:
-  - name: after_insert_user
-    definition:
-      enable_manual: false
-      insert:
-        columns: '*'
-    retry_conf:
-      interval_sec: 10
-      num_retries: 0
-      timeout_sec: 60
-    webhook: http://host.docker.internal:3000/after-insert-user
+- definition:
+    enable_manual: false
+    insert:
+      columns: "*"
+  name: after_insert_user
+  retry_conf:
+    interval_sec: 10
+    num_retries: 0
+    timeout_sec: 60
+  webhook: http://host.docker.internal:3000/after-insert-user

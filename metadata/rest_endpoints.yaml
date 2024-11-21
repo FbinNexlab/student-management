@@ -4,7 +4,7 @@
       collection_name: allowed-queries
       query_name: course_class
   methods:
-    - GET
+  - GET
   name: course_class
   url: course_class
 - comment: ""
@@ -13,7 +13,7 @@
       collection_name: allowed-queries
       query_name: insert_course_class_one
   methods:
-    - POST
+  - POST
   name: insert_course_class_one
   url: course_class
 - comment: ""
@@ -22,7 +22,7 @@
       collection_name: allowed-queries
       query_name: course_class_by_pk
   methods:
-    - GET
+  - GET
   name: course_class_by_pk
   url: course_class/:id
 - comment: ""
@@ -31,7 +31,7 @@
       collection_name: allowed-queries
       query_name: update_course_class_by_pk
   methods:
-    - POST
+  - POST
   name: update_course_class_by_pk
   url: course_class/:id
 - comment: ""
@@ -40,6 +40,6 @@
       collection_name: allowed-queries
       query_name: delete_course_class_by_pk
   methods:
-    - DELETE
+  - DELETE
   name: delete_course_class_by_pk
   url: course_class/:id

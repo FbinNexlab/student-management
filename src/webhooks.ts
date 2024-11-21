@@ -33,7 +33,7 @@ app.get("/auth", (request, response) => {
   // Extract token from request
   var autherizationHeader = request.get("Authorization");
   if (!autherizationHeader) {
-    response.status(401).json({ message: "Authorization header is required" });
+    response.status(200).json({ "X-Hasura-Role": "guest" });
     return;
   }
 

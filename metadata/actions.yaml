@@ -1,28 +1,26 @@
 actions:
-  - name: login_action
-    definition:
-      kind: synchronous
-      handler: http://host.docker.internal:3000/login
-    comment: Login user with email and password
-  - name: signUp_action
-    definition:
-      kind: synchronous
-      handler: http://host.docker.internal:3000/signup
-    comment: Login a user with email and password
+- name: login_action
+  definition:
+    kind: synchronous
+    handler: http://host.docker.internal:3000/login
+- name: signUp_action
+  definition:
+    kind: synchronous
+    handler: http://host.docker.internal:3000/signup
 custom_types:
   enums:
-    - name: UserRole
-      values:
-        - description: null
-          is_deprecated: null
-          value: STUDENT
-        - description: null
-          is_deprecated: null
-          value: LECTURER
+  - name: UserRole
+    values:
+    - description: null
+      is_deprecated: null
+      value: STUDENT
+    - description: null
+      is_deprecated: null
+      value: LECTURER
   input_objects:
-    - name: UserInput
+  - name: UserInput
   objects:
-    - name: DeleteCourseClassOutput
-    - name: Response
-    - name: LoginResponse
+  - name: DeleteCourseClassOutput
+  - name: Response
+  - name: LoginResponse
   scalars: []

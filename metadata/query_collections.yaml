@@ -1,68 +1,68 @@
 - name: allowed-queries
   definition:
     queries:
-      - name: course_class_by_pk
-        query: |
-          query course_class_by_pk ($id: Int!) {
-            course_class_by_pk(id: $id) {
-              class_monitor_id
-              class_name
-              course_name
-              id
-              lecturer_id
-              number_of_student
-              status
-            }
+    - name: course_class_by_pk
+      query: |
+        query course_class_by_pk ($id: Int!) {
+          course_class_by_pk(id: $id) {
+            class_monitor_id
+            class_name
+            course_name
+            id
+            lecturer_id
+            number_of_student
+            status
           }
-      - name: course_class
-        query: |
-          query course_class {
-            course_class {
-              class_monitor_id
-              class_name
-              course_name
-              id
-              lecturer_id
-              number_of_student
-              status
-            }
+        }
+    - name: course_class
+      query: |
+        query course_class {
+          course_class {
+            class_monitor_id
+            class_name
+            course_name
+            id
+            lecturer_id
+            number_of_student
+            status
           }
-      - name: insert_course_class_one
-        query: |
-          mutation insert_course_class_one ($object: course_class_insert_input!) {
-            insert_course_class_one(object: $object) {
-              class_monitor_id
-              class_name
-              course_name
-              id
-              lecturer_id
-              number_of_student
-              status
-            }
+        }
+    - name: insert_course_class_one
+      query: |
+        mutation insert_course_class_one ($object: course_class_insert_input!) {
+          insert_course_class_one(object: $object) {
+            class_monitor_id
+            class_name
+            course_name
+            id
+            lecturer_id
+            number_of_student
+            status
           }
-      - name: update_course_class_by_pk
-        query: |
-          mutation update_course_class_by_pk ($id: Int!, $object: course_class_set_input!) {
-            update_course_class_by_pk(pk_columns: {id:$id}, _set: $object) {
-              class_monitor_id
-              class_name
-              course_name
-              id
-              lecturer_id
-              number_of_student
-              status
-            }
+        }
+    - name: update_course_class_by_pk
+      query: |
+        mutation update_course_class_by_pk ($id: Int!, $object: course_class_set_input!) {
+          update_course_class_by_pk(pk_columns: {id:$id}, _set: $object) {
+            class_monitor_id
+            class_name
+            course_name
+            id
+            lecturer_id
+            number_of_student
+            status
           }
-      - name: delete_course_class_by_pk
-        query: |
-          mutation delete_course_class_by_pk ($id: Int!) {
-            delete_course_class_by_pk(id: $id) {
-              class_monitor_id
-              class_name
-              course_name
-              id
-              lecturer_id
-              number_of_student
-              status
-            }
+        }
+    - name: delete_course_class_by_pk
+      query: |
+        mutation delete_course_class_by_pk ($id: Int!) {
+          delete_course_class_by_pk(id: $id) {
+            class_monitor_id
+            class_name
+            course_name
+            id
+            lecturer_id
+            number_of_student
+            status
           }
+        }

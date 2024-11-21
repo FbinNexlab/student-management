@@ -2,85 +2,85 @@ table:
   name: course_class
   schema: public
 object_relationships:
-  - name: lecturer
-    using:
-      foreign_key_constraint_on: lecturer_id
-  - name: monitor
-    using:
-      foreign_key_constraint_on: class_monitor_id
+- name: lecturer
+  using:
+    foreign_key_constraint_on: lecturer_id
+- name: monitor
+  using:
+    foreign_key_constraint_on: class_monitor_id
 array_relationships:
-  - name: students
-    using:
-      foreign_key_constraint_on:
-        column: course_class_id
-        table:
-          name: course_class_students
-          schema: public
+- name: students
+  using:
+    foreign_key_constraint_on:
+      column: course_class_id
+      table:
+        name: course_class_students
+        schema: public
 insert_permissions:
-  - role: lecturer
-    permission:
-      check:
-        lecturer_id:
-          _eq: X-Hasura-User-Id
-      set:
-        lecturer_id: x-hasura-X-Hasura-User-Id
-        number_of_student: "0"
-        status: CLOSE
-      columns:
-        - class_monitor_id
-        - class_name
-        - course_name
-    comment: ""
+- comment: ""
+  permission:
+    check:
+      lecturer_id:
+        _eq: X-Hasura-User-Id
+    columns:
+    - class_monitor_id
+    - class_name
+    - course_name
+    set:
+      lecturer_id: x-hasura-X-Hasura-User-Id
+      number_of_student: "0"
+      status: CLOSE
+  role: lecturer
 select_permissions:
-  - role: lecturer
-    permission:
-      columns:
-        - class_name
-        - course_name
-        - status
-        - class_monitor_id
-        - id
-        - lecturer_id
-        - number_of_student
-      filter:
-        lecturer_id:
-          _eq: X-Hasura-User-Id
-      limit: 10
-    comment: ""
-  - role: student
-    permission:
-      columns:
-        - class_name
-        - course_name
-        - status
-        - class_monitor_id
-        - id
-        - lecturer_id
-        - number_of_student
-      filter:
-        status:
-          _eq: OPEN
-    comment: ""
+- comment: ""
+  permission:
+    columns:
+    - class_name
+    - course_name
+    - status
+    - class_monitor_id
+    - id
+    - lecturer_id
+    - number_of_student
+    filter:
+      lecturer_id:
+        _eq: X-Hasura-User-Id
+    limit: 10
+  role: lecturer
+- comment: ""
+  permission:
+    columns:
+    - class_name
+    - course_name
+    - status
+    - class_monitor_id
+    - id
+    - lecturer_id
+    - number_of_student
+    filter:
+      status:
+        _eq: OPEN
+  role: student
 update_permissions:
-  - role: lecturer
-    permission:
-      columns:
-        - class_monitor_id
-        - class_name
-        - course_name
-        - status
-      filter:
-        lecturer_id:
-          _eq: X-Hasura-User-Id
-      check: {}
-    comment: ""
+- comment: ""
+  permission:
+    check: {}
+    columns:
+    - class_monitor_id
+    - class_name
+    - course_name
+    - status
+    filter:
+      lecturer_id:
+        _eq: X-Hasura-User-Id
+  role: lecturer
 delete_permissions:
-  - role: lecturer
-    permission:
-      filter:
-        _and:
-          - lecturer_id:
-              _eq: X-Hasura-User-Id
-          - number_of_student:
-              _lt: 5
-    comment: ""
+- comment: ""
+  permission:
+    filter:
+      _and:
+      - lecturer_id:
+          _eq: X-Hasura-User-Id
+      - number_of_student:
+          _lt: 5
+  role: lecturer
