@@ -1,5 +1,9 @@
+networks:
+  student-management-network:
+    driver: bridge
+
 services:
-  postgresdb:
+  postgres:
     image: postgres
     environment:
       POSTGRES_USER: postgres
@@ -9,34 +13,38 @@ services:
       - "5432:5432"
     volumes:
       - ~/data:/var/lib/postgresql/data
-  # student-management:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #     target: base
-  #   volumes:
-  #     - ./src:/home/node/app/src
-  #   environment:
-  #     DB_HOST: postgresdb
-  #     DB_PORT: 5432
-  #     DB_USERNAME: postgres
-  #     DB_PASSWORD: 1234
-  #   ports:
-  #     - "4000:4000"
-  #   command: npm run start
-  #   depends_on:
-  #     - postgresdb
-  student-management: 
-    image: fbin243/student-management
+    networks:
+      - student-management-network
+  student-management:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    volumes:
+      - ./src:/home/node/app/src
     environment:
-      DB_HOST: postgresdb
+      DB_HOST: postgres
       DB_PORT: 5432
       DB_USERNAME: postgres
       DB_PASSWORD: 1234
     ports:
       - "4000:4000"
-    depends_on:
-      - postgresdb
-    volumes:
-      - ./src:/home/node/app/src
     command: npm run start
+    depends_on:
+      - postgres
+    networks:
+      - student-management-network
+  # student-management:
+  #   image: fbin243/student-management
+  #   environment:
+  #     DB_HOST: postgres
+  #     DB_PORT: 5432
+  #     DB_USERNAME: postgres
+  #     DB_PASSWORD: 1234
+  #   ports:
+  #     - "4000:4000"
+  #   depends_on:
+  #     - postgres
+  #   volumes:
+  #     - ./src:/home/node/app/src
+  #   command: npm run start

@@ -7,7 +7,17 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: student_management
+    networks:
+      - student-management-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
   graphql-engine:
     image: hasura/graphql-engine:v2.42.0
     ports:
@@ -15,9 +25,9 @@ services:
     restart: always
     environment:
       ## postgres database to store Hasura metadata
-      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
+      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:1234@postgres:5432/student_management
       ## this env var can be used to add the above postgres database to Hasura as a data source. this can be removed/updated based on your needs
-      PG_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
+      PG_DATABASE_URL: postgres://postgres:1234@postgres:5432/student_management
       ## enable the console served by server
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
       ## enable debugging mode. It is recommended to disable this in production
@@ -26,17 +36,21 @@ services:
       ## uncomment next line to run console offline (i.e load console assets from server instead of CDN)
       # HASURA_GRAPHQL_CONSOLE_ASSETS_DIR: /srv/console-assets
       ## uncomment next line to set an admin secret
-      HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+      HASURA_GRAPHQL_ADMIN_SECRET: hasura
       HASURA_GRAPHQL_METADATA_DEFAULTS: '{"backend_configs":{"dataconnector":{"athena":{"uri":"http://data-connector-agent:8081/api/v1/athena"},"mariadb":{"uri":"http://data-connector-agent:8081/api/v1/mariadb"},"mysql8":{"uri":"http://data-connector-agent:8081/api/v1/mysql"},"oracle":{"uri":"http://data-connector-agent:8081/api/v1/oracle"},"snowflake":{"uri":"http://data-connector-agent:8081/api/v1/snowflake"}}}}'
 
       # AUTHENTICATION
       # HASURA_GRAPHQL_JWT_SECRET: '{ "type": "HS256", "key": "oursupersecretsupersecurekey1234567890" }'
-      HASURA_GRAPHQL_AUTH_HOOK: "http://host.docker.internal:3000/auth"
-      HASURA_GRAPHQL_AUTH_HOOK_MODE: "GET"
+      # HASURA_GRAPHQL_AUTH_HOOK: "http://host.docker.internal:3000/auth"
+      # HASURA_GRAPHQL_AUTH_HOOK_MODE: "GET"
       # HASURA_GRAPHQL_UNAUTHORIZED_ROLE: "anonymous"
     depends_on:
       data-connector-agent:
         condition: service_healthy
+      postgres:
+        condition: service_healthy
+    networks:
+      - student-management-network
   data-connector-agent:
     image: hasura/graphql-data-connector:v2.42.0
     restart: always
@@ -53,5 +67,30 @@ services:
       timeout: 10s
       retries: 5
       start_period: 5s
+    networks:
+      - student-management-network
+  student-management:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    volumes:
+      - ./src:/home/node/app/src
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: student_management
+    ports:
+      - "4000:4000"
+    command: npm run start
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - student-management-network
 volumes:
   db_data:
+networks:
+  student-management-network:
+    driver: bridge

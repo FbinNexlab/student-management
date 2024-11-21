@@ -7,18 +7,18 @@ Dotenv.config();
 
 export const AppDataSource = new DataSource({
   type: "postgres",
-  host: process.env.DB_HOST || "localhost",
-  port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
-  username: process.env.DB_USERNAME || "postgres",
-  password: process.env.DB_PASSWORD || "postgres",
-  database: process.env.DB_NAME || "postgres",
+  host: process.env.POSTGRES_HOST || "postgres",
+  port: process.env.POSTGRES_PORT ? parseInt(process.env.POSTGRES_PORT) : 5432,
+  username: process.env.POSTGRES_USER || "postgres",
+  password: process.env.POSTGRES_PASSWORD || "1234",
+  database: process.env.POSTGRES_DB || "student_management",
   synchronize: false,
   logging: true,
   entities: [User, CourseClass],
   subscribers: [],
   migrations: ["src/migrations/*.ts"],
   migrationsTableName: "migrations",
-  schema: process.env.DB_SCHEMA || "public",
+  schema: process.env.POSTGRES_SCHEMA || "public",
 });
 
 AppDataSource.initialize()
